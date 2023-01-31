@@ -1,13 +1,18 @@
 import "./App.css"
+import ReactDOM from "react-dom/client"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Dashboard from "./components/Dashboard/Dashboard"
 import Login from "./components/Login/Login"
-import { BrowserRouter, Route, Switch } from "react-router-dom"
 
 function App() {
     return (
-        <div className="wrapper">
-            <Login />
-        </div>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/home" element={<Dashboard />} />
+                {/* <Route path="/api" element={<Api />} /> */}
+            </Routes>
+        </BrowserRouter>
     )
 }
 
