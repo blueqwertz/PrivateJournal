@@ -17,18 +17,47 @@ const Login = () => {
         setErrMsg("")
     }, [user, pwd])
 
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+    }
+
     return (
         <main>
             <div className="light:bg-gray-100 dark:bg-slate-900 text-gray-800 flex flex-col justify-center items-center min-h-screen">
-                <form className="sm:w-96 shadow-xl">
+                <form className="sm:w-96 shadow-xl" onSubmit={handleSubmit}>
                     <h1 className="text-2xl dark:text-white text-center font-semibold">Log in to your account 🔐</h1>
                     <div className="mt-4 bg-white dark:bg-slate-800 shadow-md rounded-lg">
                         <div className="py-1 bg-blue-400 dark:bg-blue-500 rounded-t-md"></div>
                         <div className="px-6 py-6 rounded-b-md">
                             <label className="block dark:text-slate-400 font-semibold">Username</label>
-                            <input htmlFor="user" type="text" placeholder="blobbobuser" className="border dark:bg-slate-700 dark:border-slate-500 dark:text-white w-full h-5 px-3 py-5 mt-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                            <input
+                                ref={userRef}
+                                onChange={(e) => {
+                                    setUser(e.target.value)
+                                }}
+                                value={user}
+                                id="user"
+                                required
+                                autoComplete="off"
+                                htmlFor="user"
+                                type="text"
+                                placeholder="blobbobuser"
+                                className="border dark:bg-slate-700 dark:border-slate-500 dark:text-white w-full h-5 px-3 py-5 mt-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                            />
                             <label className="block dark:text-slate-400 font-semibold mt-4">Password</label>
-                            <input htmlFor="password" type="password" placeholder="passbobhere" className="border dark:bg-slate-700 dark:border-slate-500 dark:text-white w-full h-5 px-3 py-5 mt-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                            <input
+                                ref={userRef}
+                                onChange={(e) => {
+                                    setPwd(e.target.value)
+                                }}
+                                value={pwd}
+                                id="password"
+                                required
+                                htmlFor="password"
+                                type="password"
+                                placeholder="passbobhere"
+                                className="border dark:bg-slate-700 dark:border-slate-500 dark:text-white w-full h-5 px-3 py-5 mt-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                            />
                             <div className="flex justify-center items-center">
                                 <button type="submit" className="mt-5 bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-600">
                                     Submit
