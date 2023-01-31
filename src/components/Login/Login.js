@@ -1,6 +1,22 @@
 import { useRef, useState, useEffect } from "react"
 
 const Login = () => {
+    const userRef = useRef()
+    const errRef = useRef()
+
+    const [user, setUser] = useState()
+    const [pwd, setPwd] = useState()
+    const [errMsg, setErrMsg] = useState()
+    const [success, setSuccess] = useState(false)
+
+    useEffect(() => {
+        userRef.current.focus()
+    }, [])
+
+    useEffect(() => {
+        setErrMsg("")
+    }, [user, pwd])
+
     return (
         <main>
             <div className="light:bg-gray-100 dark:bg-slate-900 text-gray-800 flex flex-col justify-center items-center min-h-screen">
