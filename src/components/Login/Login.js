@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from "react"
+import logo from "../../img/yin-yang-symbol.png"
 
 const Login = () => {
     const userRef = useRef()
@@ -23,13 +24,15 @@ const Login = () => {
 
     return (
         <main>
-            <div className="light:bg-gray-100 dark:bg-slate-900 text-gray-800 flex flex-col justify-center items-center min-h-screen">
-                <form className="sm:w-96 shadow-xl" onSubmit={handleSubmit}>
-                    <h1 className="text-2xl dark:text-white text-center font-semibold">Log in to your account 🔐</h1>
-                    <div className="mt-4 bg-white dark:bg-slate-800 shadow-md rounded-lg">
-                        <div className="py-1 bg-blue-400 dark:bg-blue-500 rounded-t-md"></div>
-                        <div className="px-6 py-6 rounded-b-md">
-                            <label className="block dark:text-slate-400 font-semibold">Username</label>
+            <div className="light:bg-gray-100 dark:bg-black text-gray-800 flex flex-col justify-center items-center min-h-screen">
+                {/* <div className="w-20 h-20">
+                    <img src={logo} className="dark:border rounded-full" />
+                </div> */}
+                <form className="px-6 py-6 sm:w-96" onSubmit={handleSubmit}>
+                    <h1 className="text-2xl dark:text-white font-semibold">Log in to your account 🔐</h1>
+                    <div className="mt-6">
+                        <div className="rounded-b-md">
+                            <label className="block dark:text-white font-semibold">Username</label>
                             <input
                                 ref={userRef}
                                 onChange={(e) => {
@@ -42,9 +45,9 @@ const Login = () => {
                                 htmlFor="user"
                                 type="text"
                                 placeholder="blobbobuser"
-                                className="border dark:bg-slate-700 dark:border-slate-500 dark:text-white w-full h-5 px-3 py-5 mt-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                className="border bg-transparent dark:border-gray-200 dark:text-white w-full h-5 px-3 py-5 mt-2 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:focus:ring-white"
                             />
-                            <label className="block dark:text-slate-400 font-semibold mt-4">Password</label>
+                            <label className="block dark:text-white font-semibold mt-4">Password</label>
                             <input
                                 ref={userRef}
                                 onChange={(e) => {
@@ -56,11 +59,14 @@ const Login = () => {
                                 htmlFor="password"
                                 type="password"
                                 placeholder="passbobhere"
-                                className="border dark:bg-slate-700 dark:border-slate-500 dark:text-white w-full h-5 px-3 py-5 mt-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                className="border bg-transparent dark:border-gray-200 dark:text-white w-full h-5 px-3 py-5 mt-2 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:focus:ring-white"
                             />
-                            <div className="flex justify-center items-center">
-                                <button type="submit" className="mt-5 bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-600">
-                                    Submit
+                            <div className="flex justify-between">
+                                <button type="submit" className="mt-6 border text-black dark:text-white py-2 px-6 font-semibold">
+                                    Register
+                                </button>
+                                <button type="submit" className="mt-6 bg-black dark:bg-white text-white dark:text-black py-2 px-6 font-semibold">
+                                    Login
                                 </button>
                             </div>
                         </div>
