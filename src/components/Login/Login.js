@@ -1,18 +1,21 @@
-import { useRef, useState, useEffect } from "react"
+import { useRef, useState, useEffect, useContext } from "react"
+import AuthContext from "../../context/AuthProvider"
+import axios from "../../api/axios"
 import logo from "../../img/yin-yang-symbol.png"
 
+const LOGIN_URL = "/auth"
+
 const Login = () => {
+    const { setAuth } = useContext(AuthContext)
+
     const userRef = useRef()
     const errRef = useRef()
 
     const [user, setUser] = useState()
     const [pwd, setPwd] = useState()
+
     const [errMsg, setErrMsg] = useState()
     const [success, setSuccess] = useState(false)
-
-    useEffect(() => {
-        userRef.current.focus()
-    }, [])
 
     useEffect(() => {
         setErrMsg("")
@@ -20,6 +23,31 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+
+        try {
+            const response = await axios.post(LOGIN_URL, JSON.stringify({ user, pwd }), {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true,
+            })
+            console.log(JSON.stringify(response?.data))
+            const accessToken = response?.data?.accessToken
+            const roles = response?.data?.roles
+            setAuth({ user, pwd, roles, accessToken })
+            setUser("")
+            setPwd("")
+            setSuccess(true)
+        } catch (err) {
+            if (!err?.response) {
+                setErrMsg("No Server Response")
+            } else if (err.response?.status == 400) {
+                setErrMsg("Missing Username or Password")
+            } else if (err.response?.status == 401) {
+                setErrMsg("Unauthorized")
+            } else {
+                setErrMsg("An error occurred")
+            }
+            errRef.current.focus()
+        }
     }
 
     return (
@@ -45,7 +73,7 @@ const Login = () => {
                                 htmlFor="user"
                                 type="text"
                                 placeholder="blobbobuser"
-                                className="border bg-transparent dark:border-gray-200 dark:text-white w-full h-5 px-3 py-5 mt-2 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:focus:ring-white"
+                                className="border rounded-none bg-transparent font-mono dark:border-gray-200 dark:text-white w-full h-5 px-3 py-5 mt-2 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:focus:ring-white"
                             />
                             <label className="block dark:text-white font-semibold mt-4">Password</label>
                             <input
@@ -55,11 +83,10 @@ const Login = () => {
                                 }}
                                 value={pwd}
                                 id="password"
-                                required
                                 htmlFor="password"
                                 type="password"
                                 placeholder="passbobhere"
-                                className="border bg-transparent dark:border-gray-200 dark:text-white w-full h-5 px-3 py-5 mt-2 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:focus:ring-white"
+                                className="border rounded-none bg-transparent font-mono dark:border-gray-200 dark:text-white w-full h-5 px-3 py-5 mt-2 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:focus:ring-white"
                             />
                             <div className="flex justify-between">
                                 <button type="submit" className="mt-6 border text-black dark:text-white py-2 px-6 font-semibold">
