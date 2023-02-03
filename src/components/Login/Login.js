@@ -1,7 +1,6 @@
 import { useRef, useState, useEffect, useContext } from "react"
 import AuthContext from "../../context/AuthProvider"
 import axios from "../../api/axios"
-import logo from "../../img/yin-yang-symbol.png"
 
 const LOGIN_URL = "/auth"
 
@@ -52,7 +51,7 @@ const Login = () => {
 
     return (
         <main>
-            <div className="light:bg-gray-100 dark:bg-black text-gray-800 flex flex-col justify-center items-center min-h-screen">
+            <div className="bg-gray-50 dark:bg-black text-gray-800 flex flex-col justify-center items-center min-h-screen">
                 {/* <div className="w-20 h-20">
                     <img src={logo} className="dark:border rounded-full" />
                 </div> */}
