@@ -4,9 +4,11 @@ const bodyParser = require("body-parser")
 const sqlite3 = require("sqlite3").verbose()
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
+const cors = require("cors")
 require("dotenv").config()
 
 app.use(bodyParser.json())
+app.use(cors())
 
 const db = new sqlite3.Database("auth.sqlite", (error) => {
     if (error) throw error
@@ -23,11 +25,18 @@ db.run("CREATE TABLE IF NOT EXISTS refresh_tokens (username text, token text)", 
 
 app.post("/register", async (req, res) => {
     const { username, password } = req.body
-    const hashedPassword = await bcrypt.hash(password, 10)
-    const insertQuery = `INSERT INTO users (username, password) VALUES ('${username}', '${hashedPassword}')`
-    db.run(insertQuery, (error) => {
+    db.get("SELECT * FROM users WHERE username = ?", [username], async (error, results) => {
         if (error) throw error
-        res.json({ message: "User registered successfully" })
+        if (results) {
+            return res.status(409).send({ message: "User already exists" })
+        } else {
+            const hashedPassword = await bcrypt.hash(password, 10)
+            const insertQuery = `INSERT INTO users (username, password) VALUES ('${username}', '${hashedPassword}')`
+            db.run(insertQuery, (error) => {
+                if (error) throw error
+                res.status(201).json({ message: "User registered successfully" })
+            })
+        }
     })
 })
 
@@ -80,6 +89,18 @@ app.post("/token", (req, res) => {
             res.status(401).json({ message: "Invalid refresh token" })
         }
     })
+})
+
+app.get("/check-token", (req, res) => {
+    const accessToken = req.headers["x-access-token"]
+    if (!accessToken) return res.status(401).send({ message: "Access token is missing" })
+
+    try {
+        const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN)
+        return res.send({ message: "Access token is valid" })
+    } catch (error) {
+        return res.status(401).send({ message: "Access token is not valid" })
+    }
 })
 
 app.listen(3001, () => {

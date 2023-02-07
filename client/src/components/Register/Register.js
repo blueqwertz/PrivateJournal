@@ -21,9 +21,17 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
-        try {
-        } catch (err) {}
+        const xhr = new XMLHttpRequest()
+        xhr.open("POST", "http://localhost:3001/register")
+        xhr.setRequestHeader("Content-Type", "application/json")
+        xhr.onload = function () {
+            if (xhr.status === 201) {
+                const response = JSON.parse(xhr.responseText)
+            } else {
+                setErrMsg(JSON.parse(xhr.response).message)
+            }
+        }
+        xhr.send(JSON.stringify({ username: user, password: pwd }))
     }
 
     const checkPwd = (value, pwd) => {

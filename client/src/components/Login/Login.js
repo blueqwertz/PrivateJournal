@@ -19,6 +19,20 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        const xhr = new XMLHttpRequest()
+        xhr.open("POST", "http://localhost:3001/login")
+        xhr.setRequestHeader("Content-Type", "application/json")
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                const response = JSON.parse(xhr.responseText)
+                localStorage.setItem("refreshToken", response?.refreshToken)
+                localStorage.setItem("accessToken", response?.accessToken)
+                console.log(response)
+            } else {
+                setErrMsg(JSON.parse(xhr.response).message)
+            }
+        }
+        xhr.send(JSON.stringify({ username: user, password: pwd }))
     }
 
     return (
