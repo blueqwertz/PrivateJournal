@@ -23,20 +23,25 @@ export default function Dashboard({ name }) {
         }
     }
 
+    function handleStorySumit(value) {
+        console.log(value)
+    }
+
     let greeting = randomGreetingByName(name)
 
     return (
-        <main className="bg-gray-50 dark:bg-black flex flex-col">
-            <div className="flex flex-col min-h-screen max-w-3xl min-w-[70%] self-center px-6">
+        <main className="bg-gray-50 dark:bg-black flex flex-col min-w-[310px]">
+            <div className="flex flex-col min-h-screen max-w-3xl min-w-full sm:min-w-[70%] lg:w-[800px] lg:min-w-0 self-center px-6 pt-5">
                 <SideBar />
                 <div className="py-4 mt-5">
                     <h1 className="dark:text-white text-4xl">{greeting}</h1>
                 </div>
                 <span className="dark:text-white text-xl mb-3 font-semibold">Todays Story</span>
-                <Writer />
+                <Writer callback={handleStorySumit} />
                 <span className="dark:text-white text-xl mb-3">Previous Stories</span>
-                <div className="flex flex-wrap gap-6 pb-10">
+                <div className="flex flex-wrap align gap-6 pb-10">
                     <Diary />
+                    <div className="w-40 p-3 flex-auto"></div>
                 </div>
             </div>
         </main>

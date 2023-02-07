@@ -1,12 +1,9 @@
 import { useRef, useState, useEffect, useContext } from "react"
-import AuthContext from "../../context/AuthProvider"
-import axios from "../../api/axios"
+import { Link } from "react-router-dom"
 
 const LOGIN_URL = "/auth"
 
-const Login = () => {
-    const { setAuth } = useContext(AuthContext)
-
+const Register = () => {
     const userRef = useRef()
     const errRef = useRef()
 
@@ -16,6 +13,8 @@ const Login = () => {
     const [errMsg, setErrMsg] = useState()
     const [success, setSuccess] = useState(false)
 
+    const [typingTimeout, setTypingTimeout] = useState(null)
+
     useEffect(() => {
         setErrMsg("")
     }, [user, pwd])
@@ -24,29 +23,23 @@ const Login = () => {
         e.preventDefault()
 
         try {
-            const response = await axios.post(LOGIN_URL, JSON.stringify({ user, pwd }), {
-                headers: { "Content-Type": "application/json" },
-                withCredentials: true,
-            })
-            console.log(JSON.stringify(response?.data))
-            const accessToken = response?.data?.accessToken
-            const roles = response?.data?.roles
-            setAuth({ user, pwd, roles, accessToken })
-            setUser("")
-            setPwd("")
-            setSuccess(true)
-        } catch (err) {
-            if (!err?.response) {
-                setErrMsg("No Server Response")
-            } else if (err.response?.status == 400) {
-                setErrMsg("Missing Username or Password")
-            } else if (err.response?.status == 401) {
-                setErrMsg("Unauthorized")
-            } else {
-                setErrMsg("An error occurred")
-            }
-            errRef.current.focus()
+        } catch (err) {}
+    }
+
+    const checkPwd = (value, pwd) => {
+        if (value == pwd) {
+            setErrMsg("")
         }
+        clearTimeout(typingTimeout)
+        setTypingTimeout(
+            setTimeout(() => {
+                if (value != pwd) {
+                    setErrMsg("Passwords do not match.")
+                } else {
+                    setErrMsg("")
+                }
+            }, 200)
+        )
     }
 
     return (
@@ -56,8 +49,11 @@ const Login = () => {
                     <img src={logo} className="dark:border rounded-full" />
                 </div> */}
                 <form className="px-6 py-6 sm:w-96" onSubmit={handleSubmit}>
-                    <h1 className="text-2xl dark:text-white font-semibold">Log in to your account 🔐</h1>
-                    <div className="mt-6">
+                    <h1 className="text-2xl dark:text-white font-semibold mb-1">Register new account 🔐</h1>
+                    <Link to="/login" className="text-gray-400 hover:underline hover:cursor-pointer">
+                        Login instead
+                    </Link>
+                    <div className="mt-3">
                         <div className="rounded-b-md">
                             <label className="block dark:text-white font-semibold">Username</label>
                             <input
@@ -87,12 +83,19 @@ const Login = () => {
                                 placeholder="passbobhere"
                                 className="border rounded-none bg-transparent font-mono dark:border-gray-200 dark:text-white w-full h-5 px-3 py-5 mt-2 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:focus:ring-white"
                             />
-                            <div className="flex justify-between">
-                                <button type="submit" className="mt-6 border text-black dark:text-white py-2 px-6 font-semibold">
+                            <label className="block dark:text-white font-semibold mt-4">Repeat Password</label>
+                            <input
+                                onChange={(e) => {
+                                    checkPwd(e.target.value, pwd)
+                                }}
+                                type="password"
+                                placeholder="passbobhere"
+                                className="border rounded-none bg-transparent font-mono dark:border-gray-200 dark:text-white w-full h-5 px-3 py-5 mt-2 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:focus:ring-white mb-3"
+                            />
+                            <div className="text-red-600 h-[19px]">{errMsg}</div>
+                            <div className="flex justify-end">
+                                <button type="submit" className="mt-3 bg-black dark:bg-white text-white dark:text-black py-2 px-6 font-semibold">
                                     Register
-                                </button>
-                                <button type="submit" className="mt-6 bg-black dark:bg-white text-white dark:text-black py-2 px-6 font-semibold">
-                                    Login
                                 </button>
                             </div>
                         </div>
@@ -103,4 +106,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default Register
