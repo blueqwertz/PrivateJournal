@@ -1,17 +1,22 @@
-import { useRef, useState, useEffect, useContext } from "react"
-import { Link } from "react-router-dom"
+import { useRef, useState, useEffect } from "react"
+import axios from "../../api/axios"
+import useAuth from "../../hooks/useAuth"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 
 const LOGIN_URL = "/auth"
 
 const Login = () => {
+    const { setAuth } = useAuth()
+
+    const navigate = useNavigate()
+    const location = useLocation()
+    const from = location.state?.from?.pathname || "/home"
+
     const userRef = useRef()
-    const errRef = useRef()
 
-    const [user, setUser] = useState()
-    const [pwd, setPwd] = useState()
-
-    const [errMsg, setErrMsg] = useState()
-    const [success, setSuccess] = useState(false)
+    const [user, setUser] = useState("")
+    const [pwd, setPwd] = useState("")
+    const [errMsg, setErrMsg] = useState("")
 
     useEffect(() => {
         setErrMsg("")
@@ -19,20 +24,31 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const xhr = new XMLHttpRequest()
-        xhr.open("POST", "http://localhost:3001/login")
-        xhr.setRequestHeader("Content-Type", "application/json")
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                const response = JSON.parse(xhr.responseText)
-                localStorage.setItem("refreshToken", response?.refreshToken)
-                localStorage.setItem("accessToken", response?.accessToken)
-                console.log(response)
+
+        try {
+            const response = await axios.post(LOGIN_URL, JSON.stringify({ user, pwd }), {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true,
+            })
+            console.log(JSON.stringify(response?.data))
+            //console.log(JSON.stringify(response));
+            const accessToken = response?.data?.accessToken
+            const roles = response?.data?.roles
+            setAuth({ user, pwd, roles, accessToken })
+            setUser("")
+            setPwd("")
+            navigate(from, { replace: true })
+        } catch (err) {
+            if (!err?.response) {
+                setErrMsg("No Server Response")
+            } else if (err.response?.status === 400) {
+                setErrMsg("Missing Username or Password")
+            } else if (err.response?.status === 401) {
+                setErrMsg("Unauthorized")
             } else {
-                setErrMsg(JSON.parse(xhr.response).message)
+                setErrMsg("Login Failed")
             }
         }
-        xhr.send(JSON.stringify({ username: user, password: pwd }))
     }
 
     return (
@@ -51,14 +67,14 @@ const Login = () => {
                             <label className="block dark:text-white font-semibold">Username</label>
                             <input
                                 ref={userRef}
+                                value={user}
                                 onChange={(e) => {
                                     setUser(e.target.value)
                                 }}
-                                value={user}
                                 id="user"
                                 required
                                 autoComplete="off"
-                                htmlFor="user"
+                                htmlFor="username"
                                 type="text"
                                 placeholder="blobbobuser"
                                 className="border rounded-none bg-transparent font-mono dark:border-gray-200 dark:text-white w-full h-5 px-3 py-5 mt-2 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:focus:ring-white"
@@ -66,11 +82,12 @@ const Login = () => {
                             <label className="block dark:text-white font-semibold mt-4">Password</label>
                             <input
                                 ref={userRef}
+                                value={pwd}
                                 onChange={(e) => {
                                     setPwd(e.target.value)
                                 }}
-                                value={pwd}
                                 id="password"
+                                required
                                 htmlFor="password"
                                 type="password"
                                 placeholder="passbobhere"

@@ -1,53 +1,77 @@
-import { useRef, useState, useEffect, useContext } from "react"
+import { useRef, useState, useEffect } from "react"
 import { Link } from "react-router-dom"
+import axios from "../../api/axios"
 
-const LOGIN_URL = "/auth"
+const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/
+const PWD_REGEX = /^\S{8,}$/
+const REGISTER_URL = "/register"
 
 const Register = () => {
     const userRef = useRef()
     const errRef = useRef()
 
-    const [user, setUser] = useState()
-    const [pwd, setPwd] = useState()
+    const [user, setUser] = useState("")
+    const [validName, setValidName] = useState(false)
 
-    const [errMsg, setErrMsg] = useState()
-    const [success, setSuccess] = useState(false)
+    const [pwd, setPwd] = useState("")
+    const [validPwd, setValidPwd] = useState(false)
 
-    const [typingTimeout, setTypingTimeout] = useState(null)
+    const [matchPwd, setMatchPwd] = useState("")
+    const [validMatch, setValidMatch] = useState(false)
+
+    const [errMsg, setErrMsg] = useState("")
+
+    useEffect(() => {
+        setValidName(USER_REGEX.test(user))
+    }, [user])
+
+    useEffect(() => {
+        setValidPwd(PWD_REGEX.test(pwd))
+        setValidMatch(pwd === matchPwd)
+    }, [pwd, matchPwd])
 
     useEffect(() => {
         setErrMsg("")
-    }, [user, pwd])
+    }, [user, pwd, matchPwd])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const xhr = new XMLHttpRequest()
-        xhr.open("POST", "http://localhost:3001/register")
-        xhr.setRequestHeader("Content-Type", "application/json")
-        xhr.onload = function () {
-            if (xhr.status === 201) {
-                const response = JSON.parse(xhr.responseText)
+        const v1 = USER_REGEX.test(user)
+        const v2 = PWD_REGEX.test(pwd)
+        const v3 = pwd === matchPwd
+
+        if (!v1) {
+            setErrMsg("Username Not Allowed")
+            return
+        } else if (!v2) {
+            setErrMsg("Password Has To Have At Least 8 Characters")
+            return
+        } else if (!v3) {
+            setErrMsg("Passwords Do Not Match")
+            return
+        }
+
+        setErrMsg("")
+
+        try {
+            const response = await axios.post(REGISTER_URL, JSON.stringify({ user, pwd }), {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true,
+            })
+            console.log(JSON.stringify(response?.data))
+            console.log(JSON.stringify(response))
+            setUser("")
+            setPwd("")
+            setMatchPwd("")
+        } catch (err) {
+            if (!err?.response) {
+                setErrMsg("No Server Response")
+            } else if (err.response?.status === 409) {
+                setErrMsg("Username Already Taken")
             } else {
-                setErrMsg(JSON.parse(xhr.response).message)
+                setErrMsg("Registration Failed")
             }
         }
-        xhr.send(JSON.stringify({ username: user, password: pwd }))
-    }
-
-    const checkPwd = (value, pwd) => {
-        if (value == pwd) {
-            setErrMsg("")
-        }
-        clearTimeout(typingTimeout)
-        setTypingTimeout(
-            setTimeout(() => {
-                if (value != pwd) {
-                    setErrMsg("Passwords do not match.")
-                } else {
-                    setErrMsg("")
-                }
-            }, 200)
-        )
     }
 
     return (
@@ -84,6 +108,7 @@ const Register = () => {
                                 onChange={(e) => {
                                     setPwd(e.target.value)
                                 }}
+                                aria-invalid={validPwd ? "false" : "true"}
                                 value={pwd}
                                 id="password"
                                 htmlFor="password"
@@ -93,9 +118,11 @@ const Register = () => {
                             />
                             <label className="block dark:text-white font-semibold mt-4">Repeat Password</label>
                             <input
+                                value={matchPwd}
                                 onChange={(e) => {
-                                    checkPwd(e.target.value, pwd)
+                                    setMatchPwd(e.target.value)
                                 }}
+                                aria-invalid={validMatch ? "false" : "true"}
                                 type="password"
                                 placeholder="passbobhere"
                                 className="border rounded-none bg-transparent font-mono dark:border-gray-200 dark:text-white w-full h-5 px-3 py-5 mt-2 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:focus:ring-white mb-3"

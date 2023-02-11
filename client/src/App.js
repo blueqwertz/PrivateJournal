@@ -1,34 +1,31 @@
 import "./App.css"
-import ReactDOM from "react-dom/client"
+import React from "react"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Dashboard from "./components/Dashboard/Dashboard"
 import Login from "./components/Login/Login"
 import Register from "./components/Register/Register"
+import { AuthProvider } from "./context/AuthProvider"
+import Layout from "./components/Layout"
+import RequireAuth from "./components/RequireAuth"
 
 function App() {
-    try {
-        const { refreshToken, accessToken } = localStorage
-        console.log(refreshToken, accessToken)
-        const xhr = new XMLHttpRequest()
-        xhr.open("GET", "http://localhost:3001/check-token")
-        xhr.setRequestHeader("x-access-token", accessToken)
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                console.log(xhr.responseText)
-            } else {
-                console.error(xhr.responseText)
-            }
-        }
-        xhr.send()
-    } catch {}
     return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route path="/home" element={<Dashboard name="Tim" />} />
-                <Route path="/register" element={<Register />} />
-            </Routes>
-        </BrowserRouter>
+        <React.StrictMode>
+            <AuthProvider>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/" element={<Layout />}>
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/register" element={<Register />} />
+
+                            <Route element={<RequireAuth />}>
+                                <Route path="/home" element={<Dashboard />} />
+                            </Route>
+                        </Route>
+                    </Routes>
+                </BrowserRouter>
+            </AuthProvider>
+        </React.StrictMode>
     )
 }
 
