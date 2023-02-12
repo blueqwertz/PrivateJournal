@@ -9,6 +9,7 @@ import Layout from "./components/Layout"
 import RequireAuth from "./components/RequireAuth"
 import PersistLogin from "./components/PersistLogin"
 import Logout from "./components/Logout/Logout"
+import RouteDefault from "./components/RouteDefault"
 
 function App() {
     if (localStorage.theme === "dark" || (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
@@ -26,6 +27,8 @@ function App() {
                 <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<Layout />}>
+                            <Route path="" element={<RouteDefault />} />
+                            <Route path="*" element={<RouteDefault />} />
                             <Route path="/login" element={<Login />} />
                             <Route path="/register" element={<Register />} />
                             <Route path="/logout" element={<Logout />} />
