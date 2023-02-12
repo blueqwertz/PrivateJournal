@@ -1,7 +1,6 @@
-POST http://localhost:3500/auth
+GET http://localhost:3500/story
 Content-Type: application/json
 
 {
-    "user": "admin",
-    "pwd": "admin"
+    "user": "tim"
 }

@@ -1,12 +1,17 @@
 import { useRef, useState, useEffect } from "react"
-import { Link } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import axios from "../../api/axios"
+import bcrypt from "bcryptjs"
+import useAuth from "../../hooks/useAuth"
 
-const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/
+const USER_REGEX = /^[A-z][A-z0-9-_]{2,23}$/
 const PWD_REGEX = /^\S{8,}$/
 const REGISTER_URL = "/register"
+const LOGIN_URL = "/auth"
 
 const Register = () => {
+    const { setAuth } = useAuth()
+
     const userRef = useRef()
     const errRef = useRef()
 
@@ -20,6 +25,10 @@ const Register = () => {
     const [validMatch, setValidMatch] = useState(false)
 
     const [errMsg, setErrMsg] = useState("")
+
+    const navigate = useNavigate()
+    const location = useLocation()
+    const from = location.state?.from?.pathname || "/home"
 
     useEffect(() => {
         setValidName(USER_REGEX.test(user))
@@ -54,15 +63,27 @@ const Register = () => {
         setErrMsg("")
 
         try {
-            const response = await axios.post(REGISTER_URL, JSON.stringify({ user, pwd }), {
+            const salt = "$2a$10$k/WnQ.zNOIHwphvy1vec0O"
+            const hashpassword = await bcrypt.hash(pwd, salt)
+            const response = await axios.post(REGISTER_URL, JSON.stringify({ user, pwd: hashpassword }), {
                 headers: { "Content-Type": "application/json" },
                 withCredentials: true,
             })
-            console.log(JSON.stringify(response?.data))
-            console.log(JSON.stringify(response))
+
+            const login_response = await axios.post(LOGIN_URL, JSON.stringify({ user, pwd: hashpassword }), {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true,
+            })
+            const accessToken = login_response?.data?.accessToken
+            const roles = login_response?.data?.roles
+
+            setAuth({ user, pwd, roles, accessToken })
+
             setUser("")
             setPwd("")
             setMatchPwd("")
+
+            navigate(from, { replace: true })
         } catch (err) {
             if (!err?.response) {
                 setErrMsg("No Server Response")

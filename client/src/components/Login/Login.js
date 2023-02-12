@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from "react"
 import axios from "../../api/axios"
 import useAuth from "../../hooks/useAuth"
 import { Link, useLocation, useNavigate } from "react-router-dom"
+import bcrypt from "bcryptjs"
 
 const LOGIN_URL = "/auth"
 
@@ -24,17 +25,16 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
+        const salt = "$2a$10$k/WnQ.zNOIHwphvy1vec0O"
+        const hashpassword = await bcrypt.hash(pwd, salt)
         try {
-            const response = await axios.post(LOGIN_URL, JSON.stringify({ user, pwd }), {
+            const response = await axios.post(LOGIN_URL, JSON.stringify({ user, pwd: hashpassword }), {
                 headers: { "Content-Type": "application/json" },
                 withCredentials: true,
             })
-            console.log(JSON.stringify(response?.data))
-            //console.log(JSON.stringify(response));
             const accessToken = response?.data?.accessToken
             const roles = response?.data?.roles
-            setAuth({ user, pwd, roles, accessToken })
+            setAuth({ user, roles, accessToken })
             setUser("")
             setPwd("")
             navigate(from, { replace: true })
@@ -95,7 +95,7 @@ const Login = () => {
                             />
                             <div className="text-red-600 h-[19px]">{errMsg}</div>
                             <div className="flex justify-end">
-                                <button type="submit" className="mt-3 bg-black dark:bg-white text-white dark:text-black py-2 px-6 font-semibold">
+                                <button type="submit" className="mt-3 bg-black dark:bg-white text-white dark:text-black py-2 px-6 font-semibold focus:ring-2 focus:ring-gray-500 transition-all duration-200">
                                     Login
                                 </button>
                             </div>

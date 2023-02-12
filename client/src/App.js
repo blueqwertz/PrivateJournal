@@ -7,8 +7,19 @@ import Register from "./components/Register/Register"
 import { AuthProvider } from "./context/AuthProvider"
 import Layout from "./components/Layout"
 import RequireAuth from "./components/RequireAuth"
+import PersistLogin from "./components/PersistLogin"
+import Logout from "./components/Logout/Logout"
 
 function App() {
+    if (localStorage.theme === "dark" || (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.body.classList.add("dark")
+    } else if (localStorage.theme === "light") {
+        document.body.classList.add("light")
+    } else if (localStorage.theme === "auto") {
+        document.body.classList.add(window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "")
+    } else {
+        document.body.classList.remove("dark")
+    }
     return (
         <React.StrictMode>
             <AuthProvider>
@@ -17,9 +28,11 @@ function App() {
                         <Route path="/" element={<Layout />}>
                             <Route path="/login" element={<Login />} />
                             <Route path="/register" element={<Register />} />
-
-                            <Route element={<RequireAuth />}>
-                                <Route path="/home" element={<Dashboard />} />
+                            <Route path="/logout" element={<Logout />} />
+                            <Route element={<PersistLogin />}>
+                                <Route element={<RequireAuth />}>
+                                    <Route path="/home" element={<Dashboard />} />
+                                </Route>
                             </Route>
                         </Route>
                     </Routes>

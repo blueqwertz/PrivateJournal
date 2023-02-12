@@ -1,5 +1,6 @@
 import React from "react"
 import { Link } from "react-router-dom"
+import DarkModeToggle from "./DarkModeToggle"
 
 const SideBar = () => {
     return (
@@ -8,7 +9,8 @@ const SideBar = () => {
                 <span className="text-gray-400 font-light">Private</span>
                 <span className="font-semibold">Journal 📕</span>
             </div>
-            <div>
+            <div className="flex gap-4 items-center justify-center">
+                <DarkModeToggle />
                 <Link to="/logout" className="hover:underline hover:cursor-pointer">
                     Logout
                 </Link>
