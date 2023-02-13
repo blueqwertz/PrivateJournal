@@ -49,7 +49,7 @@ const DarkModeToggle = () => {
                 <span className={`flex items-center justify-center ${darkMode ? "bg-gray-900" : "bg-gray-200"} w-7 h-7 p-[6px] rounded-full border border-gray-300 dark:border-gray-800`}>{darkMode ? <MoonStarsFill className="p-px" /> : <BrightnessHighFill />}</span>
             </div>
             {showOptions && (
-                <ul className="absolute right-0 top-full bg-gray-200 dark:bg-gray-900 rounded py-1 mt-2 overflow-hidden">
+                <ul className="absolute right-0 top-full bg-gray-200 dark:bg-gray-800 rounded py-1 mt-2 overflow-hidden">
                     <li className="py-1 px-3 pr-5 cursor-pointer flex gap-3 justify-left items-center hover:bg-gray-300 dark:hover:bg-gray-700 transition-all duration-200" onClick={() => handleDarkModeToggle("dark")}>
                         <MoonStarsFill className="text-gray-600 dark:text-gray-300" />
                         Dark
