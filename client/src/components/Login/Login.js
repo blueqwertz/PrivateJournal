@@ -77,7 +77,7 @@ const Login = () => {
                                 htmlFor="username"
                                 type="text"
                                 placeholder="blobbobuser"
-                                className="border rounded-none bg-transparent font-mono dark:border-gray-200 dark:text-white w-full h-5 px-3 py-5 mt-2 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:focus:ring-white"
+                                className="border border-gray-300 rounded-none bg-transparent font-mono dark:border-gray-200 dark:text-white w-full h-5 px-3 py-5 mt-2 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:focus:ring-white"
                             />
                             <label className="block dark:text-white font-semibold mt-4">Password</label>
                             <input
@@ -91,7 +91,7 @@ const Login = () => {
                                 htmlFor="password"
                                 type="password"
                                 placeholder="passbobhere"
-                                className="border rounded-none bg-transparent font-mono dark:border-gray-200 dark:text-white w-full h-5 px-3 py-5 mt-2 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:focus:ring-white mb-3"
+                                className="border border-gray-300 rounded-none bg-transparent font-mono dark:border-gray-200 dark:text-white w-full h-5 px-3 py-5 mt-2 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:focus:ring-white mb-3"
                             />
                             <div className="text-red-600 h-[19px]">{errMsg}</div>
                             <div className="flex justify-end">

@@ -6,7 +6,7 @@ const DarkModeToggle = () => {
     const [showOptions, setShowOptions] = useState(false)
 
     const handleDarkModeToggle = (mode) => {
-        setDarkMode(mode == "dark" || (mode == "auto" && window.matchMedia("(prefers-color-scheme: dark)").matches))
+        setDarkMode(mode === "dark" || (mode === "auto" && window.matchMedia("(prefers-color-scheme: dark)").matches))
         localStorage.setItem("theme", mode)
         if (localStorage.theme === "dark" || (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
             document.body.classList.add("dark")
