@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import SideBar from "./Sidebar"
+import SideBar from "../Sidebar"
 import Diary from "./Diary"
 import Writer from "./Writer"
 import useAxiosPrivate from "../../hooks/useAxiosPrivate"
@@ -29,7 +29,7 @@ export default function Dashboard() {
     }
 
     useEffect(() => {
-        const getUsers = async () => {
+        const getStories = async () => {
             const response = await axiosPrivate.post("/getstory", { user: auth?.user })
             setStories(
                 response?.data?.stories.map((story) => {
@@ -38,7 +38,7 @@ export default function Dashboard() {
             )
         }
 
-        getUsers()
+        getStories()
     }, [])
 
     function generateUUID() {
@@ -91,7 +91,7 @@ export default function Dashboard() {
     let greeting = greetingsByTimeOfDay()
 
     return (
-        <main className="bg-gray-50 dark:bg-black flex flex-col min-w-[310px]">
+        <main className="bg-gray-50 dark:bg-black flex flex-col min-w-[310px] h-full">
             <div className="flex flex-col min-h-screen min-w-full md:min-w-[80%] lg:w-[900px] lg:min-w-0 self-center px-6 pt-5">
                 <SideBar />
                 <div className="py-4 mt-5">
