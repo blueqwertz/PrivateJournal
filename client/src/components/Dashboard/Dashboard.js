@@ -30,7 +30,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         const getStories = async () => {
-            const response = await axiosPrivate.post("/getstory", { user: auth?.user })
+            const response = await axiosPrivate.post("/story", { user: auth?.user })
             setStories(
                 response?.data?.stories.map((story) => {
                     return JSON.parse(story)
@@ -56,7 +56,7 @@ export default function Dashboard() {
     function handleStorySumit(value) {
         const id = generateUUID()
         axiosPrivate
-            .post(
+            .put(
                 "/story",
                 {
                     id,

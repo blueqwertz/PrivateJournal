@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react"
 
-const EditorWriter = ({ callback, body }) => {
+const EditorWriter = ({ callback, calldelete, body }) => {
     const [isFocused, setFocused] = useState(true)
     const [storyValue, setStoryValue] = useState(body)
     const userInput = useRef()
@@ -25,7 +25,7 @@ const EditorWriter = ({ callback, body }) => {
                         if (userInput.current.value.length === 0) {
                             return
                         }
-                        callback(userInput.current.value)
+                        calldelete()
                         userInput.current.value = ""
                         setFocused(false)
                     }}

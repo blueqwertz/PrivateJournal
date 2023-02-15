@@ -25,6 +25,8 @@ const readStories = async (req, res) => {
     try {
         const { user, id } = req.body
 
+        console.log(user, id)
+
         jwt.verify(req.cookies?.jwt, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
             if (err || user !== decoded.username) return res.sendStatus(403)
         })
@@ -45,4 +47,22 @@ const readStories = async (req, res) => {
     } catch (err) {}
 }
 
-module.exports = { submitStory, readStories }
+const deleteStory = async (req, res) => {
+    try {
+        const { user, id } = req.body
+
+        jwt.verify(req.cookies?.jwt, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
+            if (err || user !== decoded.username) return res.sendStatus(403)
+        })
+
+        if (!user || !id) return res.status(400).json({ message: "Some fields are missing." })
+
+        const foundUser = await User.findOne({ username: user }).exec()
+        if (!foundUser) return res.sendStatus(401)
+        foundUser.stories = foundUser.stories.filter((story) => {
+            return story.id != id
+        })
+    } catch (err) {}
+}
+
+module.exports = { submitStory, readStories, deleteStory }

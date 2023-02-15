@@ -17,7 +17,7 @@ const Editor = () => {
 
     useEffect(() => {
         const getStories = async () => {
-            const response = await axiosPrivate.post("/getstory", { user: auth?.user, id })
+            const response = await axiosPrivate.post("/story", { user: auth?.user, id })
             const data = JSON.parse(response?.data?.stories[0])
             setStory(data)
             setIsLoading(false)
@@ -32,6 +32,14 @@ const Editor = () => {
 
         getStories()
     }, [])
+
+    const handleStorySumit = async (title, value) => {
+        return 0
+    }
+
+    const handleDeleteStory = async () => {
+        axiosPrivate.delete("/story", { user: auth?.user, id })
+    }
 
     return (
         <main className="bg-gray-50 dark:bg-black flex flex-col min-w-[310px] h-full">
@@ -50,7 +58,7 @@ const Editor = () => {
                 ) : (
                     <>
                         <div className="text-3xl mb-5 mt-3 font-semibold dark:text-white">{story.date}</div>
-                        <EditorWriter body={story.body} />
+                        <EditorWriter callback={handleStorySumit} calldelete={handleDeleteStory} body={story.body} />
                     </>
                 )}
             </div>
