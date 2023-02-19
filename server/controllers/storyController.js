@@ -25,16 +25,15 @@ const readStories = async (req, res) => {
     try {
         const { user, id } = req.body
 
-        console.log(user, id)
+        if (!user) return res.status(400).json({ message: "Some fields are missing." })
 
         jwt.verify(req.cookies?.jwt, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
             if (err || user !== decoded.username) return res.sendStatus(403)
         })
 
-        if (!user) return res.status(400).json({ message: "Some fields are missing." })
-
         const foundUser = await User.findOne({ username: user }).exec()
         if (!foundUser) return res.sendStatus(401) //Unauthorized
+
         if (id === undefined) {
             res.json({ stories: foundUser.stories })
         } else {
@@ -51,18 +50,48 @@ const deleteStory = async (req, res) => {
     try {
         const { user, id } = req.body
 
+        if (!user || !id) return res.status(400).json({ message: "Some fields are missing." })
+
         jwt.verify(req.cookies?.jwt, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
             if (err || user !== decoded.username) return res.sendStatus(403)
         })
 
-        if (!user || !id) return res.status(400).json({ message: "Some fields are missing." })
-
         const foundUser = await User.findOne({ username: user }).exec()
         if (!foundUser) return res.sendStatus(401)
         foundUser.stories = foundUser.stories.filter((story) => {
-            return story.id != id
+            return JSON.parse(story).id != id
         })
+        foundUser.save()
+        res.json({ message: `deleted story ${id}` })
     } catch (err) {}
 }
 
-module.exports = { submitStory, readStories, deleteStory }
+const saveStory = async (req, res) => {
+    try {
+        const { user, id, date, body } = req.body
+
+        console.log(body)
+
+        if (!user || !id || !date || !body) return res.status(400).json({ message: "Some fields are missing." })
+
+        jwt.verify(req.cookies?.jwt, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
+            if (err || user !== decoded.username) return res.sendStatus(403)
+        })
+
+        const foundUser = await User.findOne({ username: user }).exec()
+        if (!foundUser) return res.sendStatus(401)
+        foundUser.stories = foundUser.stories.map((story) => {
+            story = JSON.parse(story)
+            if (story.id == id) {
+                story.body = body
+                story.date = date
+            }
+            return JSON.stringify(story)
+        })
+        console.log()
+        foundUser.save()
+        res.json({ message: `changed story ${id}` })
+    } catch (err) {}
+}
+
+module.exports = { submitStory, readStories, deleteStory, saveStory }

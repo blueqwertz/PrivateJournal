@@ -5,6 +5,7 @@ import EditorWriter from "./EditorWriter"
 import useAuth from "../../hooks/useAuth"
 import useAxiosPrivate from "../../hooks/useAxiosPrivate"
 import { RiArrowLeftLine } from "react-icons/ri"
+import { useLocation, useNavigate } from "react-router-dom"
 
 const Editor = () => {
     const { auth } = useAuth()
@@ -13,7 +14,11 @@ const Editor = () => {
     const id = useParams()?.id
     const [story, setStory] = useState({})
     const [isLoading, setIsLoading] = useState(true)
-    const [isDate, setIsDate] = useState(new Date(0))
+    const [isDate, setIsDate] = useState("")
+
+    const navigate = useNavigate()
+    const location = useLocation()
+    const from = location.state?.from?.pathname || "/home"
 
     useEffect(() => {
         const getStories = async () => {
@@ -21,33 +26,34 @@ const Editor = () => {
             const data = JSON.parse(response?.data?.stories[0])
             setStory(data)
             setIsLoading(false)
-            console.log(data.date)
-            let parts = data.date.split(".")
-            let year = parts[2]
-            let month = parts[1] - 1
-            let day = parts[0]
-            setIsDate(new Date(year, month, day))
-            console.log(isDate, year, month, day)
+            setIsDate(data.date)
         }
 
         getStories()
     }, [])
 
-    const handleStorySumit = async (title, value) => {
-        return 0
+    const handleStorySumit = async (value) => {
+        await axiosPrivate.post("/story/save", {
+            user: auth?.user,
+            id,
+            date: isDate,
+            body: value,
+        })
+        navigate(from, { replace: true })
     }
 
     const handleDeleteStory = async () => {
-        axiosPrivate.delete("/story", { user: auth?.user, id })
+        await axiosPrivate.post("/story/delete", { user: auth?.user, id })
+        navigate(from, { replace: true })
     }
 
     return (
         <main className="bg-gray-50 dark:bg-black flex flex-col min-w-[310px] h-full">
-            <div className="flex flex-col min-h-screen min-w-full md:min-w-[80%] lg:w-[900px] lg:min-w-0 self-center px-6 pt-5">
+            <div className="flex flex-col min-h-screen min-w-full lg:w-[900px] lg:min-w-0 self-center px-6 pt-5">
                 <SideBar />
                 <div className="flex">
                     <Link to="/home">
-                        <div className="flex items-center justify-left cursor-pointer text-gray-600 dark:text-gray-400 hover:ring-2 px-1 pr-[8px] ring-gray-400 dark:ring-gray-600 rounded transition-all duration-150 hover:bg-gray-200 dark:hover:bg-gray-800">
+                        <div className="flex items-center justify-left cursor-pointer text-gray-600 dark:text-gray-400 hover:ring-2 px-1 pr-[8px] ring-gray-400 dark:ring-gray-600 rounded transition-all duration-150 hover:bg-gray-200 dark:hover:bg-gray-800 mb-3">
                             <RiArrowLeftLine />
                             Home
                         </div>
@@ -57,7 +63,7 @@ const Editor = () => {
                     <p>Loading...</p>
                 ) : (
                     <>
-                        <div className="text-3xl mb-5 mt-3 font-semibold dark:text-white">{story.date}</div>
+                        <input className="border-none ring-gray-200 bg-transparent text-2xl dark:ring-gray-400 ring-1 focus:ring-2 dark:text-white w-[180px] transition-all duration-150 h-5 px-2 py-5 mt-2 focus:outline-none focus:ring-gray-500 dark:focus:ring-gray-300 mb-3 font-semibold" value={isDate} onInput={(e) => setIsDate(e.target.value)} />
                         <EditorWriter callback={handleStorySumit} calldelete={handleDeleteStory} body={story.body} />
                     </>
                 )}

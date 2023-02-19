@@ -31,11 +31,11 @@ export default function Dashboard() {
     useEffect(() => {
         const getStories = async () => {
             const response = await axiosPrivate.post("/story", { user: auth?.user })
-            setStories(
-                response?.data?.stories.map((story) => {
-                    return JSON.parse(story)
-                })
-            )
+            console.log(response.data)
+            const storiesData = response?.data?.stories.map((story) => {
+                return JSON.parse(story)
+            })
+            setStories(storiesData)
         }
 
         getStories()
@@ -56,8 +56,8 @@ export default function Dashboard() {
     function handleStorySumit(value) {
         const id = generateUUID()
         axiosPrivate
-            .put(
-                "/story",
+            .post(
+                "/story/add",
                 {
                     id,
                     date: new Date().toLocaleDateString("de-de", {
@@ -92,7 +92,7 @@ export default function Dashboard() {
 
     return (
         <main className="bg-gray-50 dark:bg-black flex flex-col min-w-[310px] h-full">
-            <div className="flex flex-col min-h-screen min-w-full md:min-w-[80%] lg:w-[900px] lg:min-w-0 self-center px-6 pt-5">
+            <div className="flex flex-col min-h-screen min-w-full lg:w-[900px] lg:min-w-0 self-center px-6 pt-5">
                 <SideBar />
                 <div className="py-4 mt-5">
                     <h1 className="dark:text-white text-4xl font-medium">{greeting}</h1>

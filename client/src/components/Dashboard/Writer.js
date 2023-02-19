@@ -11,7 +11,7 @@ const Writer = ({ callback }) => {
                 onFocus={() => {
                     setFocused(true)
                 }}
-                className={`w-full h-[42px] transition-all duration-200 ${isFocused ? "h-56" : ""} resize-none rounded-none dark:bg-black px-3 py-2 border outline-none dark:text-white mb-3 sm:mb-5 dark:border-gray-400 focus:ring-2 focus:ring-gray-300 dark:focus:ring-white`}
+                className={`w-full h-[42px] transition-all duration-200 ${isFocused ? "h-56" : ""} resize-none rounded-none dark:bg-black px-3 py-2 border outline-none dark:text-white mb-3 sm:mb-5 dark:border-gray-400 focus:ring-2 focus:ring-gray-500 dark:focus:ring-white`}
                 placeholder="Write something about your day..."
             ></textarea>
             <div className="w-full flex justify-end">

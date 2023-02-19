@@ -44,6 +44,7 @@ const DarkModeToggle = () => {
     return (
         <div className="relative z-50" id="darkmodetoggle">
             <div
+                className="hover:cursor-pointer"
                 onClick={() => {
                     setShowOptions(!showOptions)
                 }}
@@ -51,7 +52,7 @@ const DarkModeToggle = () => {
                 <span className={`flex items-center text-slate-500 dark:text-slate-400 justify-center bg-gray-200 dark:bg-gray-900 w-7 h-7 p-[6px] rounded-full border border-gray-300 dark:border-gray-800`}>{isAuto ? darkMode ? <RiMoonClearLine /> : <RiSunLine /> : darkMode ? <RiMoonClearFill /> : <RiSunFill />}</span>
             </div>
 
-            <ul className={`${showOptions ? "scale-100" : "scale-90 opacity-0"} border border-gray-400 dark:border-gray-700 origin-top-right transition-all duration-100 text-slate-700 dark:text-gray-400 absolute right-0 top-full bg-gray-200 dark:bg-gray-900 rounded-md py-1 mt-2 overflow-hidden`}>
+            <ul className={`${showOptions ? "scale-100" : "scale-90 opacity-0 pointer-events-none"} border border-gray-400 dark:border-gray-700 origin-top-right transition-all duration-100 text-slate-700 dark:text-gray-400 absolute right-0 top-full bg-gray-200 dark:bg-gray-900 rounded-md py-1 mt-2 overflow-hidden`}>
                 <li className="py-1 px-3 pr-5 cursor-pointer flex gap-3 justify-left items-center hover:bg-gray-300 dark:hover:bg-gray-700 transition-all duration-200" onClick={() => handleDarkModeToggle("dark")}>
                     <RiMoonClearLine />
                     Dark

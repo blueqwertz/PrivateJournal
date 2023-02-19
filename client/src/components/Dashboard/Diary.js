@@ -7,7 +7,7 @@ const Diary = ({ stories }) => {
             return <Story key={story.id} id={story.id} title={story.date} body={story.body} />
         })
     ) : (
-        <p className="dark:text-gray-400">Nothing here...</p>
+        <p className="text-gray-500 dark:text-gray-400">Nothing here...</p>
     )
 }
 

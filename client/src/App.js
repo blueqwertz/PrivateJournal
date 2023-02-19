@@ -25,6 +25,7 @@ function App() {
     } else {
         document.body.classList.add("dark")
     }
+
     return (
         <React.StrictMode>
             <AuthProvider>
