@@ -88,7 +88,7 @@ export default function DatePicker({ storyDate, setStoryDate }) {
 					})}
 				</div>
 				<div className="grid w-full grid-cols-7">
-					{generateDate(dateLocal, month, year).map(({ date, currentMonth, selected, previousMonth, nextMonth }, index) => {
+					{generateDate(dateLocal, month, year).map(({ date, currentMonth, selected, previousMonth, nextMonth, today }, index) => {
 						return (
 							<div
 								key={index}
@@ -104,7 +104,7 @@ export default function DatePicker({ storyDate, setStoryDate }) {
 							>
 								<div
 									className={`transition-background grid h-10 w-10 select-none place-content-center rounded-full font-light transition-bg  ${
-										selected ? (currentMonth ? "bg-sky-200 hover:bg-sky-300 active:bg-sky-400 dark:bg-sky-500 dark:hover:bg-sky-600 dark:active:bg-sky-700" : "bg-gray-300 dark:bg-gray-500") : currentMonth ? "hover:bg-gray-200 active:bg-gray-400 dark:hover:bg-gray-700 dark:active:bg-gray-500" : ""
+										selected ? (currentMonth ? "bg-sky-200 hover:bg-sky-300 active:bg-sky-400 dark:bg-sky-500 dark:hover:bg-sky-600 dark:active:bg-sky-700" : "bg-gray-300 dark:bg-gray-500") : today ? "bg-gray-300 dark:bg-gray-700" : currentMonth ? "hover:bg-gray-200 active:bg-gray-400 dark:hover:bg-gray-700 dark:active:bg-gray-500" : ""
 									}`}
 								>
 									{date.date()}
