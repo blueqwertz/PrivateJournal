@@ -105,6 +105,7 @@ export default function Dashboard() {
                 <div className="flex flex-wrap align gap-6 pb-10">
                     <Diary stories={stories} />
                     <div className="w-40 p-3 flex-auto"></div>
+                    <div className="w-40 p-3 flex-auto"></div>
                 </div>
             </div>
         </main>

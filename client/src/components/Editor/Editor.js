@@ -6,6 +6,7 @@ import useAuth from "../../hooks/useAuth"
 import useAxiosPrivate from "../../hooks/useAxiosPrivate"
 import { RiArrowLeftLine } from "react-icons/ri"
 import { useLocation, useNavigate } from "react-router-dom"
+import DatePicker from "../DatePicker"
 
 const Editor = () => {
     const { auth } = useAuth()
@@ -33,13 +34,16 @@ const Editor = () => {
     }, [])
 
     const handleStorySumit = async (value) => {
-        await axiosPrivate.post("/story/save", {
-            user: auth?.user,
-            id,
-            date: isDate,
-            body: value,
-        })
-        navigate(from, { replace: true })
+        await axiosPrivate
+            .post("/story/save", {
+                user: auth?.user,
+                id,
+                date: isDate,
+                body: value,
+            })
+            .then(() => {
+                navigate(from, { replace: true })
+            })
     }
 
     const handleDeleteStory = async () => {
@@ -63,6 +67,7 @@ const Editor = () => {
                     <p>Loading...</p>
                 ) : (
                     <>
+                        <DatePicker date={new Date()} />
                         <input className="border-none ring-gray-200 bg-transparent text-2xl dark:ring-gray-400 ring-1 focus:ring-2 dark:text-white w-[180px] transition-all duration-150 h-5 px-2 py-5 mt-2 focus:outline-none focus:ring-gray-500 dark:focus:ring-gray-300 mb-3 font-semibold" value={isDate} onInput={(e) => setIsDate(e.target.value)} />
                         <EditorWriter callback={handleStorySumit} calldelete={handleDeleteStory} body={story.body} />
                     </>
