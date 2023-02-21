@@ -102,7 +102,7 @@ const Register = () => {
 
 	return (
 		<main>
-			<div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 text-gray-800 dark:bg-black">
+			<div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 text-gray-800 dark:bg-background">
 				{/* <div className="w-20 h-20">
                     <img src={logo} className="dark:border rounded-full" />
                 </div> */}

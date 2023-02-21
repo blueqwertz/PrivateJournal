@@ -49,7 +49,7 @@ export default function DatePicker({ storyDate, setStoryDate }) {
 			<div className="flex">
 				<div
 					id="datepickertoggle"
-					className="mb-5 cursor-pointer select-none border border-gray-300 px-2 py-1 text-lg dark:border-gray-500 dark:text-white"
+					className="mb-5 cursor-pointer select-none rounded-none border border-gray-300 px-2 py-1 text-lg dark:border-gray-500 dark:text-white"
 					onClick={() => {
 						setShowDatePicker(!showDatePicker)
 					}}
@@ -61,7 +61,7 @@ export default function DatePicker({ storyDate, setStoryDate }) {
 					})}
 				</div>
 			</div>
-			<div id="datepickertoggle" className={`${showDatePicker ? "scale-100" : "pointer-events-none scale-90 opacity-0"} absolute top-10 z-50 mt-2 w-96 origin-top-left border border-gray-400 bg-gray-100 transition-all duration-200 dark:border-gray-400 dark:bg-gray-900 dark:text-white`}>
+			<div id="datepickertoggle" className={`${showDatePicker ? "scale-100" : "pointer-events-none scale-90 opacity-0"} absolute top-10 z-50 mt-2 w-96 origin-top-left rounded-none border border-gray-400 bg-gray-100 transition-all duration-200 dark:border-gray-400 dark:bg-popup dark:text-white`}>
 				<div className="flex h-10 font-extralight">
 					<div className="flex grow items-center justify-around">
 						<div className="p-3 hover:cursor-pointer" onClick={monthBack}>

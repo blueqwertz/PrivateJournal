@@ -5,12 +5,11 @@ import DarkModeToggle from "./DarkModeToggle"
 import UserController from "./UserController"
 
 const SideBar = () => {
-	const { auth } = useAuth()
 	return (
-		<div className="flex h-16 w-full items-center justify-between dark:bg-black dark:text-gray-50">
+		<div className="flex h-16 w-full items-center justify-between dark:text-text">
 			<Link to="/home" className="hover:cursor-pointer">
 				<div className="flex text-2xl">
-					<span className="font-light text-gray-400">Private</span>
+					<span className="font-light text-accent">Private</span>
 					<span className="font-semibold">Journal 📕</span>
 				</div>
 			</Link>

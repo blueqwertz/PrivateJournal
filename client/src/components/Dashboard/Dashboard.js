@@ -106,15 +106,15 @@ export default function Dashboard() {
 	let greeting = greetingsByTimeOfDay()
 
 	return (
-		<main className="flex h-full min-w-[310px] flex-col bg-gray-50 dark:bg-black">
+		<main className="flex h-full min-w-[310px] flex-col bg-gray-50 dark:bg-background">
 			<div className="flex min-h-screen min-w-full flex-col self-center px-6 pt-5 lg:w-[900px] lg:min-w-0">
 				<SideBar />
 				<div className="mt-5 py-4">
-					<h1 className="text-4xl font-medium dark:text-white">{greeting}</h1>
+					<h1 className="text-4xl font-medium dark:text-text">{greeting}</h1>
 				</div>
-				<span className="mb-3 text-xl font-semibold dark:text-white">Todays Story</span>
+				<span className="mb-3 text-xl font-semibold dark:text-text">Todays Story</span>
 				<Writer callback={handleStorySumit} />
-				<div className="mb-3 text-xl dark:text-white">
+				<div className="mb-3 text-xl dark:text-text">
 					<span>Previous Stories</span>
 				</div>
 				<div className="align flex flex-wrap gap-6 pb-10">
