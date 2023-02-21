@@ -13,7 +13,7 @@ module.exports = {
 				background: "#0F0F0F",
 				text: "#F5F5F5",
 				button: "#4DA6FF",
-				popup: "#161C28",
+				popup: "#1B1D22",
 			},
 		},
 	},
