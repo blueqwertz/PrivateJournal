@@ -7,7 +7,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate"
 import { RiArrowLeftLine } from "react-icons/ri"
 import { useLocation, useNavigate } from "react-router-dom"
 import DatePicker from "../DatePicker"
-import { decrypt } from "n-krypta"
+import { decrypt, encrypt } from "n-krypta"
 
 const Editor = () => {
 	const { auth } = useAuth()
@@ -26,7 +26,6 @@ const Editor = () => {
 		const getStories = async () => {
 			const response = await axiosPrivate.post("/story", { user: auth?.user, id })
 			const data = JSON.parse(response?.data?.stories[0])
-			console.log(data.body)
 			data.body = decrypt(data.body, localStorage.getItem("encryptionKey"))
 			setStory(data)
 			setIsLoading(false)
@@ -37,6 +36,7 @@ const Editor = () => {
 	}, [])
 
 	const handleStorySumit = async (value) => {
+		const encryptedBody = await encrypt(value.trim(), localStorage.getItem("encryptionKey"))
 		await axiosPrivate
 			.post("/story/save", {
 				user: auth?.user,
@@ -46,7 +46,7 @@ const Editor = () => {
 					month: "2-digit",
 					year: "numeric",
 				}),
-				body: value,
+				body: encryptedBody,
 			})
 			.then(() => {
 				navigate(from, { replace: true })
