@@ -59,7 +59,7 @@ const Editor = () => {
 	}
 
 	return (
-		<main className="flex h-full min-w-[310px] flex-col bg-gray-50 dark:bg-black">
+		<main className="flex h-full min-w-[310px] flex-col bg-gray-50 dark:bg-background">
 			<div className="flex min-h-screen min-w-full flex-col self-center px-6 pt-5 lg:w-[900px] lg:min-w-0">
 				<SideBar />
 				<div className="flex">
