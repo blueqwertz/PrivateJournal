@@ -61,7 +61,7 @@ export default function DatePicker({ storyDate, setStoryDate }) {
 					})}
 				</div>
 			</div>
-			<div id="datepickertoggle" className={`${showDatePicker ? "scale-100" : "pointer-events-none scale-90 opacity-0"} absolute top-10 z-50 mt-2 w-96 origin-top-left border border-gray-400 bg-white transition-all duration-200 dark:border-gray-400 dark:bg-black dark:text-white`}>
+			<div id="datepickertoggle" className={`${showDatePicker ? "scale-100" : "pointer-events-none scale-90 opacity-0"} absolute top-10 z-50 mt-2 w-96 origin-top-left border border-gray-400 bg-gray-100 transition-all duration-200 dark:border-gray-400 dark:bg-gray-900 dark:text-white`}>
 				<div className="flex h-10 font-extralight">
 					<div className="flex grow items-center justify-around">
 						<div className="p-3 hover:cursor-pointer" onClick={monthBack}>

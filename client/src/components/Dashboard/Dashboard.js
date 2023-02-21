@@ -4,6 +4,7 @@ import Diary from "./Diary"
 import Writer from "./Writer"
 import useAxiosPrivate from "../../hooks/useAxiosPrivate"
 import useAuth from "../../hooks/useAuth"
+import { encrypt, decrypt } from "n-krypta"
 
 export default function Dashboard() {
 	const { auth } = useAuth()
@@ -17,7 +18,9 @@ export default function Dashboard() {
 
 		if (currentHour >= 4 && currentHour < 12) {
 			return "Have a great day!"
-		} else if (currentHour >= 12 && currentHour < 17) {
+		} else if (currentHour >= 12 && currentHour <= 15) {
+			return "Enjoy your lunch!"
+		} else if (currentHour >= 15 && currentHour < 17) {
 			return "Good afternoon, take it easy!"
 		} else if (currentHour >= 17 && currentHour < 19) {
 			return "Almost done for the day!"
@@ -36,6 +39,10 @@ export default function Dashboard() {
 			const storiesData = response?.data?.stories
 				.map((story) => {
 					return JSON.parse(story)
+				})
+				.map((story) => {
+					story.body = decrypt(story.body, localStorage.getItem("encryptionKey"))
+					return story
 				})
 				.sort((a, b) => {
 					const dateA = new Date(a.date.split(".").reverse().join("-"))
@@ -60,8 +67,9 @@ export default function Dashboard() {
 		})
 	}
 
-	function handleStorySumit(value) {
+	async function handleStorySumit(value) {
 		const id = generateUUID()
+		const encryptedBody = await encrypt(value.trim(), localStorage.getItem("encryptionKey"))
 		axiosPrivate
 			.post(
 				"/story/add",
@@ -72,7 +80,7 @@ export default function Dashboard() {
 						month: "2-digit",
 						year: "numeric",
 					}),
-					body: value.trim(),
+					body: encryptedBody,
 					user: auth.user,
 				},
 				{ withCredentials: true }

@@ -1,5 +1,7 @@
+import React from "react"
+
 const Loading = () => {
-    return <div className="h-screen dark:bg-black flex justify-center items-center dark:text-white">Loading...</div>
+	return <div className="flex h-screen items-center justify-center dark:bg-black dark:text-white">Loading...</div>
 }
 
 export default Loading

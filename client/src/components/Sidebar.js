@@ -2,6 +2,7 @@ import React from "react"
 import { Link } from "react-router-dom"
 import useAuth from "../hooks/useAuth"
 import DarkModeToggle from "./DarkModeToggle"
+import UserController from "./UserController"
 
 const SideBar = () => {
 	const { auth } = useAuth()
@@ -13,11 +14,9 @@ const SideBar = () => {
 					<span className="font-semibold">Journal 📕</span>
 				</div>
 			</Link>
-			<div className="flex items-center justify-center gap-4">
+			<div className="flex items-center justify-center gap-3">
 				<DarkModeToggle />
-				<Link to="/logout" className="hover:cursor-pointer hover:underline">
-					{`Logout (${auth.user})`}
-				</Link>
+				<UserController />
 			</div>
 		</div>
 	)

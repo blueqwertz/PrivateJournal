@@ -1,9 +1,10 @@
+import React from "react"
 import { useLocation, Navigate } from "react-router-dom"
 
 const RouteDefault = () => {
-    const location = useLocation()
+	const location = useLocation()
 
-    return <Navigate to="/home" state={{ from: location }} replace />
+	return <Navigate to="/home" state={{ from: location }} replace />
 }
 
 export default RouteDefault

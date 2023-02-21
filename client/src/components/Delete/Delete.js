@@ -3,13 +3,15 @@ import { useState, useEffect } from "react"
 import axios from "../../api/axios"
 import { Navigate } from "react-router-dom"
 import Loading from "../Loading"
+import useAxiosPrivate from "../../hooks/useAxiosPrivate"
 
-const Logout = () => {
+const Delete = () => {
 	const [isLoading, setIsLoading] = useState(true)
+	const axiosPrivate = useAxiosPrivate()
 	useEffect(() => {
 		const logoutUser = async () => {
 			localStorage.removeItem("encryptionKey")
-			await axios.get("/logout", { withCredentials: true })
+			await axiosPrivate.get("/delete")
 			setIsLoading(false)
 		}
 		logoutUser()
@@ -17,4 +19,4 @@ const Logout = () => {
 	return isLoading ? <Loading /> : <Navigate to="/login" />
 }
 
-export default Logout
+export default Delete

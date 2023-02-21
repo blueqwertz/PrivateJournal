@@ -7,6 +7,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate"
 import { RiArrowLeftLine } from "react-icons/ri"
 import { useLocation, useNavigate } from "react-router-dom"
 import DatePicker from "../DatePicker"
+import { decrypt } from "n-krypta"
 
 const Editor = () => {
 	const { auth } = useAuth()
@@ -25,6 +26,8 @@ const Editor = () => {
 		const getStories = async () => {
 			const response = await axiosPrivate.post("/story", { user: auth?.user, id })
 			const data = JSON.parse(response?.data?.stories[0])
+			console.log(data.body)
+			data.body = decrypt(data.body, localStorage.getItem("encryptionKey"))
 			setStory(data)
 			setIsLoading(false)
 			setIsDate(new Date(data.date.split(".")[2], data.date.split(".")[1] - 1, data.date.split(".")[0]))
@@ -77,7 +80,6 @@ const Editor = () => {
 								setIsDate(value)
 							}}
 						/>
-						{/* <input className="border-none ring-gray-200 bg-transparent text-2xl dark:ring-gray-400 ring-1 focus:ring-2 dark:text-white w-[180px] transition-all duration-150 h-5 px-2 py-5 mt-2 focus:outline-none focus:ring-gray-500 dark:focus:ring-gray-300 mb-3 font-semibold" value={isDate} onInput={(e) => setIsDate(e.target.value)} /> */}
 						<EditorWriter callback={handleStorySumit} calldelete={handleDeleteStory} body={story.body} />
 					</div>
 				)}
