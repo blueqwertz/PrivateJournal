@@ -39,7 +39,7 @@ const DarkModeToggle = () => {
 	}, [])
 
 	return (
-		<div className="relative z-50" id="darkmodetoggle">
+		<div className="relative z-20" id="darkmodetoggle">
 			<div
 				className="hover:cursor-pointer"
 				onClick={() => {

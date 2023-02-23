@@ -5,6 +5,8 @@ import Writer from "./Writer"
 import useAxiosPrivate from "../../hooks/useAxiosPrivate"
 import useAuth from "../../hooks/useAuth"
 import { encrypt, decrypt } from "n-krypta"
+import { RiArrowRightLine } from "react-icons/ri"
+import MoodPicker from "../MoodPicker"
 
 export default function Dashboard() {
 	const { auth } = useAuth()
@@ -112,7 +114,17 @@ export default function Dashboard() {
 				<div className="mt-5 py-4">
 					<h1 className="text-4xl font-medium dark:text-text">{greeting}</h1>
 				</div>
-				<span className="mb-3 text-xl font-semibold dark:text-text">Todays Story</span>
+				<span className="mb-3 flex justify-between text-xl italic dark:text-text">
+					<span>Current Mood</span>
+					<div className="flex cursor-pointer items-center justify-center gap-1 text-xl text-gray-500 hover:underline">
+						View history
+						<RiArrowRightLine />
+					</div>
+				</span>
+				<MoodPicker />
+				<span className="mb-3 text-xl font-semibold dark:text-text">
+					<span>Today's Story</span>
+				</span>
 				<Writer callback={handleStorySumit} />
 				<div className="mb-3 text-xl dark:text-text">
 					<span>Previous Stories</span>

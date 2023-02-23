@@ -19,4 +19,10 @@ module.exports = {
 	},
 	plugins: [],
 	darkMode: "class",
+	safelist: [
+		{
+			pattern: /bg-(red|lime|blue|orange|gray|violet|white)-(100|300|500|700)/,
+			variants: ["hover", "bg", "text"],
+		},
+	],
 }
