@@ -34,7 +34,7 @@ const handleDelete = async (req, res) => {
 		return res.sendStatus(204)
 	}
 
-	await User.remove({ username: foundUser.username })
+	await User.deleteMany({ username: foundUser.username })
 
 	res.json({ message: "deleted user" })
 }

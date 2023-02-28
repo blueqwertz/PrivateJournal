@@ -1,6 +1,5 @@
 import React from "react"
 import { useState, useEffect } from "react"
-import axios from "../../api/axios"
 import { Navigate } from "react-router-dom"
 import Loading from "../Loading"
 import useAxiosPrivate from "../../hooks/useAxiosPrivate"

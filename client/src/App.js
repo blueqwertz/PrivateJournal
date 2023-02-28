@@ -12,6 +12,7 @@ import Logout from "./components/Logout/Logout"
 import RouteDefault from "./components/RouteDefault"
 import Editor from "./components/Editor/Editor"
 import Delete from "./components/Delete/Delete"
+import MoodDashboard from "./components/Mood/Mood"
 
 function App() {
 	if (localStorage.theme === "dark" || (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
@@ -34,7 +35,6 @@ function App() {
 					<Routes>
 						<Route path="/" element={<Layout />}>
 							<Route path="" element={<RouteDefault />} />
-							<Route path="*" element={<RouteDefault />} />
 							<Route path="/login" element={<Login />} />
 							<Route path="/register" element={<Register />} />
 							<Route path="/logout" element={<Logout />} />
@@ -42,6 +42,7 @@ function App() {
 							<Route element={<PersistLogin />}>
 								<Route element={<RequireAuth />}>
 									<Route path="/home" element={<Dashboard />} />
+									<Route path="/mood" element={<MoodDashboard />} />
 									<Route path="/story/:id" element={<Editor />} />
 								</Route>
 							</Route>

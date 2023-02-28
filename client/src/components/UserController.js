@@ -30,7 +30,7 @@ const UserController = ({ setAlert }) => {
 				</span>
 			</div>
 
-			<ul className={`${showOptions ? "scale-100" : "pointer-events-none scale-90 opacity-0"} absolute right-0 top-full mt-2 origin-top-right overflow-hidden rounded-none border border-gray-300 bg-gray-100 py-1 text-slate-700 transition-all duration-100 dark:border-gray-700 dark:bg-popup dark:text-gray-500`}>
+			<ul className={`${showOptions ? "scale-100" : "pointer-events-none scale-90 opacity-0"} absolute right-0 top-full mt-2 origin-top-right overflow-hidden rounded-none border border-gray-300 bg-gray-100 py-1 text-slate-700 transition-all duration-100 dark:border-gray-700 dark:bg-popup dark:text-gray-400`}>
 				<li className="justify-left flex cursor-pointer items-center gap-3 border-b border-gray-300 py-1 px-3 pr-5 pb-2 transition-all duration-200 hover:cursor-pointer dark:border-gray-700 dark:text-gray-400">
 					<RiUser3Fill />
 					{auth.user}

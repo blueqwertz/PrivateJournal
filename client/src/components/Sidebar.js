@@ -1,7 +1,6 @@
 import React, { useState } from "react"
 import { Link } from "react-router-dom"
 import Alert from "../Alert"
-import useAuth from "../hooks/useAuth"
 import DarkModeToggle from "./DarkModeToggle"
 import UserController from "./UserController"
 

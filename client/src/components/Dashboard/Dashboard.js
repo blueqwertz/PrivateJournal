@@ -7,6 +7,7 @@ import useAuth from "../../hooks/useAuth"
 import { encrypt, decrypt } from "n-krypta"
 import { RiArrowRightLine } from "react-icons/ri"
 import MoodPicker from "../MoodPicker"
+import { Link } from "react-router-dom"
 
 export default function Dashboard() {
 	const { auth } = useAuth()
@@ -69,24 +70,34 @@ export default function Dashboard() {
 		})
 	}
 
+	async function handleMoodSubmit(value) {
+		const id = generateUUID()
+		await axiosPrivate.post("/mood/add", {
+			id,
+			date: new Date().toLocaleDateString("de-de", {
+				day: "2-digit",
+				month: "2-digit",
+				year: "numeric",
+			}),
+			mood: value,
+			user: auth.user,
+		})
+	}
+
 	async function handleStorySumit(value) {
 		const id = generateUUID()
 		const encryptedBody = await encrypt(value.trim(), localStorage.getItem("encryptionKey"))
-		axiosPrivate
-			.post(
-				"/story/add",
-				{
-					id,
-					date: new Date().toLocaleDateString("de-de", {
-						day: "2-digit",
-						month: "2-digit",
-						year: "numeric",
-					}),
-					body: encryptedBody,
-					user: auth.user,
-				},
-				{ withCredentials: true }
-			)
+		await axiosPrivate
+			.post("/story/add", {
+				id,
+				date: new Date().toLocaleDateString("de-de", {
+					day: "2-digit",
+					month: "2-digit",
+					year: "numeric",
+				}),
+				body: encryptedBody,
+				user: auth.user,
+			})
 			.then(() => {
 				setStories([
 					{
@@ -114,14 +125,16 @@ export default function Dashboard() {
 				<div className="mt-5 py-4">
 					<h1 className="text-4xl font-medium dark:text-text">{greeting}</h1>
 				</div>
-				<span className="mb-3 flex justify-between text-xl italic dark:text-text">
+				<span className="mb-3 flex justify-between text-xl dark:text-text">
 					<span>Current Mood</span>
-					<div className="flex cursor-pointer items-center justify-center gap-1 text-xl text-gray-500 hover:underline">
-						View history
-						<RiArrowRightLine />
-					</div>
+					<Link to="/mood">
+						<div className="flex cursor-pointer items-center justify-center gap-1 text-lg text-gray-500 hover:underline">
+							View history
+							<RiArrowRightLine />
+						</div>
+					</Link>
 				</span>
-				<MoodPicker />
+				<MoodPicker callback={handleMoodSubmit} />
 				<span className="mb-3 text-xl font-semibold dark:text-text">
 					<span>Today's Story</span>
 				</span>

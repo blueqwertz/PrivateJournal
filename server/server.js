@@ -39,17 +39,18 @@ app.use(cookieParser())
 app.use("/", express.static(path.join(__dirname, "/public")))
 
 // routes
-app.use("/", require("./routes/root"))
-app.use("/auth", require("./routes/auth"))
-app.use("/register", require("./routes/register"))
-app.use("/refresh", require("./routes/refresh"))
-app.use("/logout", require("./routes/logout"))
+app.use("/api/", require("./routes/root"))
+app.use("/api/auth", require("./routes/auth"))
+app.use("/api/register", require("./routes/register"))
+app.use("/api/refresh", require("./routes/refresh"))
+app.use("/api/logout", require("./routes/logout"))
 
 app.use(verifyJWT)
-app.use("/employees", require("./routes/api/employees"))
-app.use("/users", require("./routes/api/users"))
-app.use("/story", require("./routes/story"))
-app.use("/delete", require("./routes/delete"))
+app.use("/api/employees", require("./routes/api/employees"))
+app.use("/api/users", require("./routes/api/users"))
+app.use("/api/story", require("./routes/story"))
+app.use("/api/mood", require("./routes/mood"))
+app.use("/api/delete", require("./routes/delete"))
 
 app.all("*", (req, res) => {
 	res.status(404)

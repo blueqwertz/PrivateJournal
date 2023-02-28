@@ -1,9 +1,7 @@
 import React, { useState } from "react"
-import { BiHappy, BiHappyBeaming, BiHappyHeartEyes, BiSad, BiAngry, BiSleepy } from "react-icons/bi"
-import { TbMoodNervous } from "react-icons/tb"
 import Mood from "./Mood"
 
-function MoodPicker() {
+function MoodPicker({ callback }) {
 	const [currentMood, setCurrentMood] = useState(undefined)
 	return (
 		<>
@@ -16,7 +14,15 @@ function MoodPicker() {
 				<Mood mood={5} key={5} currentMood={currentMood} setCurrentMood={setCurrentMood} />
 			</div>
 			<div className="flex w-full justify-end">
-				<button type="submit" className={`mb-5 rounded-none border bg-transparent py-2 px-6 font-semibold text-black transition-all duration-200 hover:cursor-pointer focus:ring-2 focus:ring-gray-300 dark:border-gray-400 dark:text-white dark:focus:ring-white`}>
+				<button
+					onClick={() => {
+						if (currentMood) {
+							callback(currentMood)
+						}
+						setCurrentMood(undefined)
+					}}
+					className={`mb-5 rounded-none border  bg-transparent py-2 px-6 font-semibold text-black transition-all duration-200 hover:cursor-pointer focus:ring-2 focus:ring-gray-300 dark:border-gray-400 dark:text-white dark:focus:ring-white`}
+				>
 					Save
 				</button>
 			</div>

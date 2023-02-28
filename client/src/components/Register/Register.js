@@ -14,7 +14,6 @@ const Register = () => {
 	const { setAuth } = useAuth()
 
 	const userRef = useRef()
-	const errRef = useRef()
 
 	const [user, setUser] = useState("")
 	const [validName, setValidName] = useState(false)
@@ -70,7 +69,7 @@ const Register = () => {
 			const localEncryptionKey = await bcrypt.hash(pwd, localSalt)
 			localStorage.setItem("encryptionKey", localEncryptionKey)
 
-			const response = await axios.post(REGISTER_URL, JSON.stringify({ user, pwd: hashpassword }), {
+			await axios.post(REGISTER_URL, JSON.stringify({ user, pwd: hashpassword }), {
 				headers: { "Content-Type": "application/json" },
 				withCredentials: true,
 			})
