@@ -10,7 +10,7 @@ const Delete = () => {
 	useEffect(() => {
 		const logoutUser = async () => {
 			localStorage.removeItem("encryptionKey")
-			await axiosPrivate.get("/delete")
+			await axiosPrivate.post("/delete")
 			setIsLoading(false)
 		}
 		logoutUser()

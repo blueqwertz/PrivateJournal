@@ -20,8 +20,8 @@ const userSchema = new Schema({
 	},
 	encryptionKey: String,
 	refreshToken: [String],
-	stories: [String],
-	moods: [String],
+	stories: [Object],
+	moods: [Object],
 })
 
 module.exports = mongoose.model("User", userSchema)

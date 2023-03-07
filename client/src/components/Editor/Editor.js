@@ -25,7 +25,7 @@ const Editor = () => {
 	useEffect(() => {
 		const getStories = async () => {
 			const response = await axiosPrivate.post("/story", { user: auth?.user, id })
-			const data = JSON.parse(response?.data?.stories[0])
+			const data = response?.data?.stories[0]
 			data.body = decrypt(data.body, localStorage.getItem("encryptionKey"))
 			setStory(data)
 			setIsLoading(false)

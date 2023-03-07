@@ -3,14 +3,14 @@ import { BiHappy, BiHappyBeaming, BiSad, BiAngry, BiSleepy } from "react-icons/b
 import { TbMoodNervous } from "react-icons/tb"
 
 function Mood({ mood, currentMood, setCurrentMood }) {
-	const moodNames = ["Happy", "Relaxed", "Tired", "Sad", "Nervous", "Angry"]
-	const moodColor = ["lime", "blue", "violet", "gray", "orange", "red"]
+	const moodNames = ["Happy", "Relaxed", "Tired", "Nervous", "Sad", "Angry"]
+	const moodColor = ["lime", "blue", "violet", "orange", "gray", "red"]
 	const moodIcons = {
 		0: <BiHappyBeaming className="text-3xl" />,
 		1: <BiHappy className="text-3xl" />,
 		2: <BiSleepy className="text-3xl" />,
-		3: <BiSad className="text-3xl" />,
-		4: <TbMoodNervous className="text-3xl" />,
+		3: <TbMoodNervous className="text-3xl" />,
+		4: <BiSad className="text-3xl" />,
 		5: <BiAngry className="text-3xl" />,
 	}
 	return (

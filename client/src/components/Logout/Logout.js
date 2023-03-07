@@ -9,7 +9,7 @@ const Logout = () => {
 	useEffect(() => {
 		const logoutUser = async () => {
 			localStorage.removeItem("encryptionKey")
-			await axios.get("/logout", { withCredentials: true })
+			await axios.post("/logout", { withCredentials: true })
 			setIsLoading(false)
 		}
 		logoutUser()

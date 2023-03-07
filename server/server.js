@@ -11,13 +11,19 @@ const cookieParser = require("cookie-parser")
 const credentials = require("./middleware/credentials")
 const mongoose = require("mongoose")
 const connectDB = require("./config/dbConn")
-const PORT = process.env.PORT || 3500
+const PORT = process.env.PORT || 3000
 
 // Connect to MongoDB
 connectDB()
 
 // custom middleware logger
 app.use(logger)
+
+app.use(express.static(path.join(__dirname, "../client/build")))
+
+app.get("*", (req, res) => {
+	res.sendFile(path.join(__dirname, "../client/build/index.html"))
+})
 
 // Handle options credentials check - before CORS!
 // and fetch cookies credentials requirement
@@ -35,9 +41,6 @@ app.use(express.json())
 //middleware for cookies
 app.use(cookieParser())
 
-//serve static files
-app.use("/", express.static(path.join(__dirname, "/public")))
-
 // routes
 app.use("/api/", require("./routes/root"))
 app.use("/api/auth", require("./routes/auth"))
@@ -45,23 +48,13 @@ app.use("/api/register", require("./routes/register"))
 app.use("/api/refresh", require("./routes/refresh"))
 app.use("/api/logout", require("./routes/logout"))
 
+// authorized routes
 app.use(verifyJWT)
 app.use("/api/employees", require("./routes/api/employees"))
 app.use("/api/users", require("./routes/api/users"))
 app.use("/api/story", require("./routes/story"))
 app.use("/api/mood", require("./routes/mood"))
 app.use("/api/delete", require("./routes/delete"))
-
-app.all("*", (req, res) => {
-	res.status(404)
-	if (req.accepts("html")) {
-		res.sendFile(path.join(__dirname, "views", "404.html"))
-	} else if (req.accepts("json")) {
-		res.json({ error: "404 Not Found" })
-	} else {
-		res.type("txt").send("404 Not Found")
-	}
-})
 
 app.use(errorHandler)
 

@@ -15,7 +15,7 @@ const submitMood = async (req, res) => {
 		if (!foundUser) return res.sendStatus(401) //Unauthorized
 
 		const prevMoods = foundUser.moods
-		foundUser.moods = [JSON.stringify({ id, date, mood }), ...prevMoods]
+		foundUser.moods = [{ id, date, mood }, ...prevMoods]
 		foundUser.save()
 		res.status(201).json({ success: `Mood added to history!` })
 	} catch (err) {}

@@ -15,7 +15,7 @@ const submitStory = async (req, res) => {
 		if (!foundUser) return res.sendStatus(401) //Unauthorized
 
 		const prevStories = foundUser.stories
-		foundUser.stories = [JSON.stringify({ id, date, body }), ...prevStories]
+		foundUser.stories = [{ id, date, body }, ...prevStories]
 		foundUser.save()
 		res.status(201).json({ success: `New story created!` })
 	} catch (err) {}
@@ -39,7 +39,7 @@ const readStories = async (req, res) => {
 		} else {
 			res.json({
 				stories: foundUser.stories.filter((story) => {
-					return JSON.parse(story).id === id
+					return story.id === id
 				}),
 			})
 		}
@@ -59,7 +59,7 @@ const deleteStory = async (req, res) => {
 		const foundUser = await User.findOne({ username: user }).exec()
 		if (!foundUser) return res.sendStatus(401)
 		foundUser.stories = foundUser.stories.filter((story) => {
-			return JSON.parse(story).id != id
+			return story.id != id
 		})
 		foundUser.save()
 		res.json({ message: `deleted story ${id}` })
@@ -81,12 +81,11 @@ const saveStory = async (req, res) => {
 		const foundUser = await User.findOne({ username: user }).exec()
 		if (!foundUser) return res.sendStatus(401)
 		foundUser.stories = foundUser.stories.map((story) => {
-			story = JSON.parse(story)
 			if (story.id == id) {
 				story.body = body
 				story.date = date
 			}
-			return JSON.stringify(story)
+			return story
 		})
 		console.log()
 		foundUser.save()

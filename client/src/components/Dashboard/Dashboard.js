@@ -5,9 +5,7 @@ import Writer from "./Writer"
 import useAxiosPrivate from "../../hooks/useAxiosPrivate"
 import useAuth from "../../hooks/useAuth"
 import { encrypt, decrypt } from "n-krypta"
-import { RiArrowRightLine } from "react-icons/ri"
 import MoodPicker from "../MoodPicker"
-import { Link } from "react-router-dom"
 
 export default function Dashboard() {
 	const { auth } = useAuth()
@@ -41,9 +39,6 @@ export default function Dashboard() {
 			const response = await axiosPrivate.post("/story", { user: auth?.user })
 			const storiesData = response?.data?.stories
 				.map((story) => {
-					return JSON.parse(story)
-				})
-				.map((story) => {
 					story.body = decrypt(story.body, localStorage.getItem("encryptionKey"))
 					return story
 				})
@@ -74,11 +69,7 @@ export default function Dashboard() {
 		const id = generateUUID()
 		await axiosPrivate.post("/mood/add", {
 			id,
-			date: new Date().toLocaleDateString("de-de", {
-				day: "2-digit",
-				month: "2-digit",
-				year: "numeric",
-			}),
+			date: new Date(),
 			mood: value,
 			user: auth.user,
 		})
@@ -125,15 +116,6 @@ export default function Dashboard() {
 				<div className="mt-5 py-4">
 					<h1 className="text-4xl font-medium dark:text-text">{greeting}</h1>
 				</div>
-				<span className="mb-3 flex justify-between text-xl dark:text-text">
-					<span>Current Mood</span>
-					<Link to="/mood">
-						<div className="flex cursor-pointer items-center justify-center gap-1 text-lg text-gray-500 hover:underline">
-							View history
-							<RiArrowRightLine />
-						</div>
-					</Link>
-				</span>
 				<MoodPicker callback={handleMoodSubmit} />
 				<span className="mb-3 text-xl font-semibold dark:text-text">
 					<span>Today's Story</span>

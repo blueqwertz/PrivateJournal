@@ -15,16 +15,11 @@ export default function MoodDashboard() {
 	useEffect(() => {
 		const getMoods = async () => {
 			const response = await axiosPrivate.post("/mood", { user: auth?.user })
-			const moodData = response?.data?.moods
-				.map((mood) => {
-					return JSON.parse(mood)
-				})
-				.sort((a, b) => {
-					const dateA = new Date(a.date.split(".").reverse().join("-"))
-					const dateB = new Date(b.date.split(".").reverse().join("-"))
-					return dateA - dateB
-				})
-				.reverse()
+			const moodData = response?.data?.moods.sort((a, b) => {
+				const dateA = new Date(a.date)
+				const dateB = new Date(b.date)
+				return dateA - dateB
+			})
 			setMoods(moodData)
 		}
 

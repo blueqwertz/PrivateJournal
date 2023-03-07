@@ -1,10 +1,25 @@
 import React, { useState } from "react"
+import { RiArrowRightLine } from "react-icons/ri"
+import { Link } from "react-router-dom"
 import Mood from "./Mood"
+import MoodHourGlass from "./MoodHourGlass"
 
 function MoodPicker({ callback }) {
 	const [currentMood, setCurrentMood] = useState(undefined)
 	return (
 		<>
+			<span className="mb-3 flex justify-between text-xl dark:text-text">
+				<div className="flex items-center justify-center gap-2">
+					<span>Current Mood</span>
+					<MoodHourGlass />
+				</div>
+				<Link to="/mood">
+					<div className="flex cursor-pointer items-center justify-center gap-1 text-lg text-gray-500 hover:underline">
+						View history
+						<RiArrowRightLine />
+					</div>
+				</Link>
+			</span>
 			<div className="mb-3 grid grid-cols-3 gap-3 dark:text-text sm:mb-5 md:grid-cols-6">
 				<Mood mood={0} key={0} currentMood={currentMood} setCurrentMood={setCurrentMood} />
 				<Mood mood={1} key={1} currentMood={currentMood} setCurrentMood={setCurrentMood} />
@@ -16,7 +31,7 @@ function MoodPicker({ callback }) {
 			<div className="flex w-full justify-end">
 				<button
 					onClick={() => {
-						if (currentMood) {
+						if (currentMood !== undefined) {
 							callback(currentMood)
 						}
 						setCurrentMood(undefined)

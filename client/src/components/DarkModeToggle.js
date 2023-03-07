@@ -26,10 +26,6 @@ const DarkModeToggle = () => {
 	}
 
 	useEffect(() => {
-		handleDarkModeToggle(localStorage.theme)
-	}, [])
-
-	useEffect(() => {
 		function handleClickOutside(event) {
 			if (!event.target.closest("#darkmodetoggle")) {
 				setShowOptions(false)
