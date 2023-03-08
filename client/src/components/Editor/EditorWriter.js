@@ -43,7 +43,7 @@ const EditorWriter = ({ callback, calldelete, body }) => {
 						setFocused(false)
 					}}
 					type="submit"
-					className={`mb-5 rounded-none border bg-white bg-transparent py-2 px-6 font-semibold text-black transition-all duration-200 hover:cursor-pointer focus:ring-2 focus:ring-gray-300 dark:border-gray-400 dark:text-white dark:focus:ring-white`}
+					className={`mb-5 rounded-none border bg-white bg-transparent py-2 px-6 font-semibold text-black transition-all duration-200 hover:cursor-pointer focus:ring-2 focus:ring-gray-300 dark:border-gray-400 dark:bg-gray-800 dark:text-white dark:focus:ring-white`}
 				>
 					Save
 				</button>
